@@ -4,10 +4,11 @@ services:
     build: .
     restart: always
     ports:
-      - "8080:8080"
+      - "8084:9097"
     networks:
       - sa_net
     environment:
+      SPRING_PROFILES_ACTIVE: dev
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/sa_api_db?useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
@@ -23,7 +24,7 @@ services:
     image: "mysql:8.0"
     restart: always
     ports:
-      - "3306:3306"
+      - "3309:3308"
     networks:
       - sa_net
     environment:

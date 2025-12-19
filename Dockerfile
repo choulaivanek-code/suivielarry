@@ -1,20 +1,27 @@
-# Utiliser une image Java comme base
+# Étape 1 : Build
 FROM eclipse-temurin:21-jdk-alpine AS build
 
-# Définir le répertoire de travail
+# Definir le repertoire de travail
 WORKDIR /app
+
+# Installer Maven
+RUN apk add --no-cache maven
+
+# Copier les fichiers du projet
 COPY . .
-RUN chmod +x mvnw
-RUN ./mvnw clean package -DskipTests
+
+# Builder l'application
+RUN mvn clean package -DskipTests
 
 # Étape 2 : Runtime
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
-COPY target/*.jar app.jar
 
-# Exposer le port sur lequel l'application écoute
+# Copier le JAR depuis l'etape de build
+COPY --from=build /app/target/*.jar app.jar
+
+# Exposer le port sur lequel l'application ecoute
 EXPOSE 8080
 
-# Commande pour démarrer l'application
+# Commande pour demarrer l'application
 ENTRYPOINT ["java", "-jar", "app.jar"]
