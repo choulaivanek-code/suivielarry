@@ -48,7 +48,7 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/suivi_api:latest
+            ${{ secrets.DOCKER_USERNAME }}/suivi_api
             ${{ secrets.DOCKER_USERNAME }}/suivi_api:${{ github.sha }}
 
       # 6️⃣ Résumé
