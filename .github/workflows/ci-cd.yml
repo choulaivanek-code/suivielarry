@@ -21,17 +21,16 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      # 2️⃣ Configuration de Java
-      - name: Set up JDK 17
+      # 2️⃣ Configuration de Java (optionnel mais propre)
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
-          cache: 'maven'
+          java-version: '21'
 
-      # 3️⃣ Build Maven SANS TESTS
+      # 3️⃣ Build Maven (sécurité + feedback rapide)
       - name: Build Spring Boot app
-        run: mvn clean package -DskipTests
+        run: mvn clean package
 
       # 4️⃣ Login Docker Hub
       - name: Login to Docker Hub
@@ -48,12 +47,5 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
-            ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-
-      # 6️⃣ Résumé
-      - name: Image published
-        run: |
-          echo "Image Docker publiée avec succès!"
-          echo "Pour la télécharger:"
-          echo "docker pull ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest"
+            ${{ secrets.DOCKER_USERNAME }}/suivi_api:latest
+            ${{ secrets.DOCKER_USERNAME }}/suivi_api:${{ github.sha }}
